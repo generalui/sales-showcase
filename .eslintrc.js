@@ -2,13 +2,12 @@ module.exports = {
   root: true,
   plugins: ['@typescript-eslint', 'react-hooks'],
   extends: [
-    // This behaves strangely, removing it for now.
-    '@react-native-community', // Re added because the lint was not working
+    '@react-native-community',
     'airbnb-typescript',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
-    'prettier/react',
   ],
   env: {
     node: true,
@@ -19,18 +18,16 @@ module.exports = {
     project: './tsconfig.json',
   },
   rules: {
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/no-unused-expressions': [
       'error',
       { allowShortCircuit: true, allowTernary: true },
     ],
     '@typescript-eslint/no-use-before-define': 'off',
-    'import/order': 'off',
-    'import/prefer-default-export': 'off',
-    'react/jsx-filename-extension': 'off',
-    'react/jsx-props-no-spreading': 'off',
+    'import/namespace': 'off',
+    'import/no-relative-parent-imports': 'error',
+    'import/no-unresolved': 'off',
     'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'error',
-    'react/require-default-props': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
 }

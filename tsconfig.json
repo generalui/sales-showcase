@@ -1,6 +1,35 @@
 {
   "extends": "expo/tsconfig.base",
+  "include": [".*.js", "**/*.js", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "__tests__/**/*-test.ts"],
   "compilerOptions": {
-    "strict": true
-  }
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "assets": ["assets"],
+      "assets/*": ["assets/*"],
+      "common": ["src/components/common"],
+      "common/*": ["src/components/common/*"],
+      "constants": ["src/utils/constants"],
+      "constants/*": ["src/utils/constants/*"],
+      "contexts": ["src/contexts"],
+      "contexts/*": ["src/contexts/*"],
+      "hooks": ["src/hooks"],
+      "hooks/*": ["src/hooks/*"],
+      "navigation": ["src/navigation"],
+      "navigation/*": ["src/navigation/*"],
+      "pages": ["src/components/pages"],
+      "pages/*": ["src/components/pages/*"],
+      "partials": ["src/components/partials"],
+      "partials/*": ["src/components/partials/*"],
+      "types": ["src/types"],
+      "types/*": ["src/types/*"],
+      "utils": ["src/utils"],
+      "utils/*": ["src/utils/*"]
+    }
+  },
+  "allowJs": false,
+  "strict": true,
+  "noUnusedLocals": true,
+  "noUnusedParameters": true
 }

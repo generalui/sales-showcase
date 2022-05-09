@@ -10,10 +10,11 @@ module.exports = {
   importOrder: [
     '^pages/(.*)$',
     '^partials/(.*)$',
-    '^widgets/(.*)$',
+    '^common/(.*)$',
+    '^constants/(.*)$',
+    '^navigation/(.*)$',
     '^hooks/(.*)$',
     '^utils/(.*)$',
-    '^contexts/(.*)$',
     '^assets/(.*)$',
     '^types/(.*)$',
     '^(./)',
