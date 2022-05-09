@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  plugins: ['@typescript-eslint', 'react-hooks'],
+  plugins: ['@typescript-eslint', 'react-hooks', 'prefer-arrow-functions'],
   extends: [
     '@react-native-community',
     'airbnb-typescript',
@@ -23,11 +23,12 @@ module.exports = {
       'error',
       { allowShortCircuit: true, allowTernary: true },
     ],
+    'arrow-body-style': 'error',
     '@typescript-eslint/no-use-before-define': 'off',
     'import/namespace': 'off',
     'import/no-relative-parent-imports': 'error',
     'import/no-unresolved': 'off',
+    'prefer-arrow-functions/prefer-arrow-functions': 'error',
     'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'off',
   },
 }

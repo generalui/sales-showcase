@@ -13,6 +13,7 @@ module.exports = {
     '^common/(.*)$',
     '^constants/(.*)$',
     '^navigation/(.*)$',
+    '^contexts/(.*)$',
     '^hooks/(.*)$',
     '^utils/(.*)$',
     '^assets/(.*)$',

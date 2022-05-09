@@ -1,17 +1,18 @@
+import React from 'react'
 import { StyleSheet } from 'react-native'
 
-import EditScreenInfo from 'partials/EditScreenInfo'
-import { Text, View } from 'partials/Themed'
+import { EditScreenInfo } from 'partials/EditScreenInfo'
 
-export default function TabTwoScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor='#eee' darkColor='rgba(255,255,255,0.1)' />
-      <EditScreenInfo path='/screens/TabTwoScreen.tsx' />
-    </View>
-  )
-}
+import { CustomText } from 'common/CustomText'
+import { CustomView } from 'common/CustomView'
+
+export const TabTwoScreen = () => (
+  <CustomView style={styles.container}>
+    <CustomText style={styles.title}>Tab Two</CustomText>
+    <CustomView style={styles.separator} />
+    <EditScreenInfo path='/screens/TabTwoScreen.tsx' />
+  </CustomView>
+)
 
 const styles = StyleSheet.create({
   container: {

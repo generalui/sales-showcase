@@ -22,6 +22,13 @@ module.exports = (api) => {
           extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
         },
       ],
+      [
+        'babel-plugin-styled-components',
+        {
+          meaninglessFileNames: ['index', 'styles'],
+        },
+      ],
+      '@babel/plugin-proposal-export-namespace-from',
     ],
   }
 }

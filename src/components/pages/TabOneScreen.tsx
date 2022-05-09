@@ -1,19 +1,20 @@
+import React from 'react'
 import { StyleSheet } from 'react-native'
 
-import EditScreenInfo from 'partials/EditScreenInfo'
-import { Text, View } from 'partials/Themed'
+import { EditScreenInfo } from 'partials/EditScreenInfo'
+
+import { CustomText } from 'common/CustomText'
+import { CustomView } from 'common/CustomView'
 
 import { RootTabScreenProps } from 'types/navigation'
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor='#eee' darkColor='rgba(255,255,255,0.1)' />
-      <EditScreenInfo path='/screens/TabOneScreen.tsx' />
-    </View>
-  )
-}
+export const TabOneScreen = ({ navigation }: RootTabScreenProps<'TabOne'>) => (
+  <CustomView style={styles.container}>
+    <CustomText style={styles.title}>Tab One</CustomText>
+    <CustomView style={styles.separator} />
+    <EditScreenInfo path='/screens/TabOneScreen.tsx' />
+  </CustomView>
+)
 
 const styles = StyleSheet.create({
   container: {
