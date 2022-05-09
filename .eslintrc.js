@@ -8,21 +8,21 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier',
     'prettier/@typescript-eslint',
-    'prettier/react'
+    'prettier/react',
   ],
   env: {
     node: true,
     browser: true,
-    jest: true
+    jest: true,
   },
   parserOptions: {
-    project: './tsconfig.json'
+    project: './tsconfig.json',
   },
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-unused-expressions': [
       'error',
-      { allowShortCircuit: true, allowTernary: true }
+      { allowShortCircuit: true, allowTernary: true },
     ],
     '@typescript-eslint/no-use-before-define': 'off',
     'import/order': 'off',
@@ -31,6 +31,6 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'error',
-    'react/require-default-props': 'off'
-  }
+    'react/require-default-props': 'off',
+  },
 }

@@ -5,7 +5,6 @@ module.exports = {
   trailingComma: 'all',
   tabWidth: 2,
   printWidth: 100,
-
   // import order https://github.com/trivago/prettier-plugin-sort-imports
   // third party modules are automatically moved to the top
   importOrder: [
@@ -18,7 +17,7 @@ module.exports = {
     '^assets/(.*)$',
     '^types/(.*)$',
     '^(./)',
-    '^(../)'
+    '^(../)',
   ],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
@@ -28,8 +27,8 @@ module.exports = {
       files: ['**/package.json', '**/locales/**/*.json', '.github/**/*.yml'],
       options: {
         useTabs: false,
-        tabWidth: 2
-      }
-    }
-  ]
+        tabWidth: 2,
+      },
+    },
+  ],
 }
