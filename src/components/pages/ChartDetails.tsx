@@ -16,6 +16,15 @@ export const ChartDetails = () => (
         transactions that have not yet been included in a block.
       </CustomText>
     </CustomView>
+    <CustomView style={styles.container}>
+      <CustomText style={styles.title}>Market Price</CustomText>
+      <CustomText>
+        The market price is how much you can sell 1 Bitcoin (BTC) for. The supply of BTC is limited
+        and pre-defined in the Bitcoin protocol. This means that the price is sensitive to shifts in
+        both supply and demand. In total, 21 Millions BTC can be mined and the Total Circulating
+        Bitcoin chart displays how many of them have already been found.
+      </CustomText>
+    </CustomView>
 
     {/* Use a light status bar on iOS to account for the black space above the modal */}
     <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />

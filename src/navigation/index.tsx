@@ -40,7 +40,7 @@ const BottomTabNavigator = () => {
 
   return (
     <BottomTab.Navigator
-      initialRouteName='TabOne'
+      initialRouteName='CryptoData'
       screenOptions={{
         tabBarStyle: { backgroundColor: theme.colors.header },
         tabBarActiveTintColor: theme.colors.primary,
@@ -55,7 +55,7 @@ const BottomTabNavigator = () => {
             backgroundColor: theme.colors.header,
           },
           headerTintColor: theme.colors.text,
-          title: 'Crypto',
+          title: 'Bitcoin Explorer',
           tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
           headerRight: () => (
             <Pressable
@@ -78,9 +78,6 @@ const BottomTabNavigator = () => {
   )
 }
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
 const TabBarIcon = (props: {
   name: React.ComponentProps<typeof FontAwesome>['name']
   color: string

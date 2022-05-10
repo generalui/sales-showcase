@@ -1,6 +1,6 @@
-const formatUnixTimestamp = (timestamp: number): string => {
+export const formatUnixTimestamp = (timestamp: number, start = 0, end = 10): string => {
   try {
-    return new Date(timestamp * 1000).toISOString().slice(0, 10)
+    return new Date(timestamp * 1000).toISOString().slice(start, end)
   } catch (e) {
     console.log('Error formatting timestamp')
     return ''
@@ -12,7 +12,7 @@ type MempoolCountRecord = {
   y: number
 }
 
-export const getAvgMempoolCountForHeatMap = (mempoolCountData: MempoolCountRecord[] = []) => {
+export const getAvgMempoolCount = (mempoolCountData: MempoolCountRecord[] = []) => {
   const dateFormattedData = mempoolCountData.map((entry) => ({
     ...entry,
     x: formatUnixTimestamp(entry.x),
@@ -30,9 +30,10 @@ export const getAvgMempoolCountForHeatMap = (mempoolCountData: MempoolCountRecor
     }
   })
 
-  const averaged = Object.entries(mempoolCountByDateDict).map(([key, value]) => {
-    return { date: key, count: value.reduce((a, b) => a + b, 0) }
-  })
+  const averaged = Object.entries(mempoolCountByDateDict).map(([key, value]) => ({
+    date: key,
+    count: value.reduce((a, b) => a + b, 0),
+  }))
 
   return averaged
 }
