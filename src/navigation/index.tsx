@@ -5,10 +5,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { Pressable } from 'react-native'
 
-import { ModalScreen } from 'pages/ModalScreen'
+import { ChartDetails } from 'pages/ChartDetails'
+import { CryptoDataScreen } from 'pages/CryptoDataScreen'
 import { NotFoundScreen } from 'pages/NotFoundScreen'
-import { TabOneScreen } from 'pages/TabOneScreen'
-import { TabTwoScreen } from 'pages/TabTwoScreen'
 
 import { useTheme } from 'contexts/ThemeContext'
 
@@ -29,7 +28,7 @@ const RootNavigator = () => (
     <Stack.Screen name='Root' component={BottomTabNavigator} options={{ headerShown: false }} />
     <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
     <Stack.Group screenOptions={{ presentation: 'modal' }}>
-      <Stack.Screen name='Modal' component={ModalScreen} />
+      <Stack.Screen name='Chart Details' component={ChartDetails} />
     </Stack.Group>
   </Stack.Navigator>
 )
@@ -49,18 +48,18 @@ const BottomTabNavigator = () => {
       }}
     >
       <BottomTab.Screen
-        name='TabOne'
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+        name='CryptoData'
+        component={CryptoDataScreen}
+        options={({ navigation }) => ({
           headerStyle: {
             backgroundColor: theme.colors.header,
           },
           headerTintColor: theme.colors.text,
-          title: 'Tab One',
+          title: 'Crypto',
           tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('Modal')}
+              onPress={() => navigation.navigate('Chart Details')}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
@@ -74,18 +73,6 @@ const BottomTabNavigator = () => {
             </Pressable>
           ),
         })}
-      />
-      <BottomTab.Screen
-        name='TabTwo'
-        component={TabTwoScreen}
-        options={{
-          headerStyle: {
-            backgroundColor: theme.colors.header,
-          },
-          headerTintColor: theme.colors.text,
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
-        }}
       />
     </BottomTab.Navigator>
   )
