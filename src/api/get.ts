@@ -8,5 +8,6 @@ export const getMempoolCount = async () => {
     return response?.data?.values
   } catch (e) {
     console.log('Error fetching: ', e)
+    return []
   }
 }

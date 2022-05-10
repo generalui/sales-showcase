@@ -12,19 +12,21 @@ type MempoolCountRecord = {
   y: number
 }
 
-export const getAvgMempoolCountForHeatMap = (mempoolCountData: MempoolCountRecord[]) => {
+export const getAvgMempoolCountForHeatMap = (mempoolCountData: MempoolCountRecord[] = []) => {
   const dateFormattedData = mempoolCountData.map((entry) => ({
     ...entry,
     x: formatUnixTimestamp(entry.x),
   }))
 
-  const mempoolCountByDateDict = {}
+  const mempoolCountByDateDict: Record<string, number[]> = {}
 
   dateFormattedData.forEach((entry) => {
-    if (!mempoolCountByDateDict[entry.x]) {
-      mempoolCountByDateDict[entry.x] = [entry.y]
+    const date = entry.x
+    const count = entry.y
+    if (!mempoolCountByDateDict[date]) {
+      mempoolCountByDateDict[date] = [count]
     } else {
-      mempoolCountByDateDict[entry.x].push(entry.y)
+      mempoolCountByDateDict[date].push(count)
     }
   })
 
