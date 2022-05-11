@@ -150,7 +150,7 @@ export const CryptoDataScreen = () => {
         />
         <Text style={labelStyle}>Hashrate Distribution by Pool</Text>
         <Text style={{ ...labelStyle, marginVertical: 0, fontSize: 12 }}>
-          (Blocks mined last 24 hours)
+          (Blocks mined last 7 days)
         </Text>
         <PieChart
           data={pieChartData}
