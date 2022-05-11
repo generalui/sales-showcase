@@ -41,6 +41,7 @@ const BottomTabNavigator = () => {
   return (
     <BottomTab.Navigator
       initialRouteName='CryptoData'
+      tabBar={() => <></>}
       screenOptions={{
         tabBarStyle: { backgroundColor: theme.colors.header },
         tabBarActiveTintColor: theme.colors.primary,

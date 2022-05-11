@@ -23,3 +23,13 @@ export const getMarketPrice = async (): Promise<{ x: number; y: number }[]> => {
     return []
   }
 }
+
+export const getHashRateDistribution = async (): Promise<Record<string, number>> => {
+  try {
+    const response = await axios.get('https://api.blockchain.info/pools?timespan=1week')
+    return response?.data
+  } catch (e) {
+    console.log('Error fetching: ', e)
+    return {}
+  }
+}

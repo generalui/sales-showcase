@@ -11,9 +11,11 @@ export const ChartDetails = () => (
     <CustomView style={styles.container}>
       <CustomText style={styles.title}>Mempool Transaction Count</CustomText>
       <CustomText>
-        In blockchain terminology, a mempool is a waiting area for the transactions that haven't
-        been added to a block and are still unconfirmed. This is how a Blockchain node deals with
-        transactions that have not yet been included in a block.
+        The mempool is where all valid transactions wait to be confirmed by the Bitcoin network. A
+        high number of transactions in the mempool indicates a congested traffic which will result
+        in longer average confirmation time and higher priority fees. The mempool count metric tells
+        how many transactions are causing the congestion whereas the Mempool Size (Bytes) chart is a
+        better metric to estimate how long the congestion will last.
       </CustomText>
     </CustomView>
     <CustomView style={styles.container}>
@@ -25,7 +27,19 @@ export const ChartDetails = () => (
         Bitcoin chart displays how many of them have already been found.
       </CustomText>
     </CustomView>
+    <CustomView style={styles.container}>
+      <CustomText style={styles.title}>Hashrate Distribution</CustomText>
+      <CustomText>
+        A mining pool is a group of miners who share their computing power over a network and get
+        rewarded based on the amount of power each contributes as opposed to whether or not the pool
+        finds a block. Mining pools help make revenue for miners more predictable. Huge drops in
+        weekly numbers could highlight that some mining pools are either being turned off or they
+        have decided to mine other currencies. If a mining pool were to control more than half of
+        the total hashrate, it could (while unlikely) lead to a 51% attack on the network.
+      </CustomText>
+    </CustomView>
 
+    <CustomText>Source: Blockchain.com</CustomText>
     {/* Use a light status bar on iOS to account for the black space above the modal */}
     <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
   </CustomView>
