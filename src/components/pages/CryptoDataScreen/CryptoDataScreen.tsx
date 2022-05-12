@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Dimensions, ScrollView, TextProps } from 'react-native'
 import { ContributionGraph, LineChart, PieChart, ProgressChart } from 'react-native-chart-kit'
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+import { Page } from 'partials/Page'
 
 import { CustomText } from 'common/CustomText'
-import { CustomView } from 'common/CustomView'
 
 import { useTheme } from 'contexts/ThemeContext'
 
@@ -24,7 +24,6 @@ const PROGRESS_CHART_COLORS = ['#F79319', '#4C00AF', '#009393']
 const CHART_COLORS = ['#BFFFF0', '#F0FFC2', '#FFE4C0', '#FFBBBB', '#C1F4C5', '#65C18C', '#FF7BA9']
 
 export const CryptoDataScreen = () => {
-  const insets = useSafeAreaInsets()
   const theme = useTheme()
 
   const primaryRgb = hexToRgb(theme.colors.primary)
@@ -145,115 +144,116 @@ export const CryptoDataScreen = () => {
   }, [])
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        display: 'flex',
-        justifyContent: 'center',
-        backgroundColor: chartConfig.backgroundColor,
-        paddingBottom: insets.bottom,
-        alignItems: 'center',
-      }}
-    >
-      {marketPriceGraphData.length > 0 && (
-        <>
-          <CustomText style={labelStyle}>Market Price</CustomText>
-          <LineChart
-            bezier
-            data={{
-              labels: marketPriceGraphLabels,
-              datasets: [
-                { data: marketPriceGraphData },
-                {
-                  data: [
-                    Math.round(
-                      (Math.min(...marketPriceGraphData) * Y_AXIS_MIN_OFFSET) / Y_AXIS_INCREMENT,
-                    ) * Y_AXIS_INCREMENT,
-                  ],
-                  withDots: false,
+    <Page>
+      <ScrollView
+        contentContainerStyle={{
+          display: 'flex',
+          justifyContent: 'center',
+          backgroundColor: chartConfig.backgroundColor,
+          alignItems: 'center',
+        }}
+      >
+        {marketPriceGraphData.length > 0 && (
+          <>
+            <CustomText style={labelStyle}>Market Price</CustomText>
+            <LineChart
+              bezier
+              data={{
+                labels: marketPriceGraphLabels,
+                datasets: [
+                  { data: marketPriceGraphData },
+                  {
+                    data: [
+                      Math.round(
+                        (Math.min(...marketPriceGraphData) * Y_AXIS_MIN_OFFSET) / Y_AXIS_INCREMENT,
+                      ) * Y_AXIS_INCREMENT,
+                    ],
+                    withDots: false,
+                  },
+                  {
+                    data: [
+                      Math.round(Math.max(...marketPriceGraphData) / Y_AXIS_INCREMENT) *
+                        Y_AXIS_INCREMENT,
+                    ],
+                    withDots: false,
+                  },
+                ],
+              }}
+              width={width}
+              height={height}
+              chartConfig={chartConfig}
+              style={chartConfig.style}
+              yAxisInterval={10}
+              formatYLabel={(value) =>
+                `${Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                  parseInt(value, 10),
+                )}`.slice(0, -3)
+              }
+            />
+          </>
+        )}
+        {progressChartData.data.length > 0 && (
+          <>
+            <CustomText style={labelStyle}>Market Capitalization</CustomText>
+            <ProgressChart
+              data={progressChartData}
+              width={width}
+              height={220}
+              strokeWidth={12}
+              radius={32}
+              chartConfig={{
+                ...chartConfig,
+                color: (opacity, index) => {
+                  const { r, g, b } = hexToRgb(PROGRESS_CHART_COLORS[index || 0]) || {
+                    r: 0,
+                    g: 0,
+                    b: 0,
+                  }
+                  return `rgba(${r}, ${g}, ${b}, ${opacity})`
                 },
-                {
-                  data: [
-                    Math.round(Math.max(...marketPriceGraphData) / Y_AXIS_INCREMENT) *
-                      Y_AXIS_INCREMENT,
-                  ],
-                  withDots: false,
-                },
-              ],
-            }}
-            width={width}
-            height={height}
-            chartConfig={chartConfig}
-            style={chartConfig.style}
-            yAxisInterval={10}
-            formatYLabel={(value) =>
-              `${Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-                parseInt(value, 10),
-              )}`.slice(0, -3)
-            }
-          />
-        </>
-      )}
-      {progressChartData.data.length > 0 && (
-        <>
-          <CustomText style={labelStyle}>Market Capitalization</CustomText>
-          <ProgressChart
-            data={progressChartData}
-            width={width}
-            height={220}
-            strokeWidth={12}
-            radius={32}
-            chartConfig={{
-              ...chartConfig,
-              color: (opacity, index) => {
-                const { r, g, b } = hexToRgb(PROGRESS_CHART_COLORS[index || 0]) || {
-                  r: 0,
-                  g: 0,
-                  b: 0,
-                }
-                return `rgba(${r}, ${g}, ${b}, ${opacity})`
-              },
-            }}
-          />
-        </>
-      )}
-      {contributionGraphData.length > 0 && (
-        <>
-          <CustomText style={labelStyle}>Mempool Transaction Count</CustomText>
-          <ContributionGraph
-            values={contributionGraphData}
-            width={width}
-            height={height}
-            numDays={contributionGraphData.length}
-            squareSize={width / 20}
-            chartConfig={chartConfig}
-            style={chartConfig.style}
-            tooltipDataAttrs={() => ({})}
-          />
-        </>
-      )}
-      {pieChartData.length > 0 && (
-        <>
-          <CustomText style={labelStyle}>Hashrate Distribution by Pool</CustomText>
-          <CustomText
-            style={{
-              textAlign: 'center',
-            }}
-          >
-            (Blocks mined last 7 days)
-          </CustomText>
-          <PieChart
-            data={pieChartData}
-            width={width}
-            height={220}
-            chartConfig={chartConfig}
-            accessor='blocksMined'
-            backgroundColor={'transparent'}
-            paddingLeft={'15'}
-            center={[10, 10]}
-            absolute
-          />
-        </>
-      )}
-    </ScrollView>
+              }}
+            />
+          </>
+        )}
+        {contributionGraphData.length > 0 && (
+          <>
+            <CustomText style={labelStyle}>Mempool Transaction Count</CustomText>
+            <ContributionGraph
+              values={contributionGraphData}
+              width={width}
+              height={height}
+              numDays={contributionGraphData.length}
+              squareSize={width / 20}
+              chartConfig={chartConfig}
+              style={chartConfig.style}
+              tooltipDataAttrs={() => ({})}
+            />
+          </>
+        )}
+        {pieChartData.length > 0 && (
+          <>
+            <CustomText style={labelStyle}>Hashrate Distribution by Pool</CustomText>
+            <CustomText
+              style={{
+                textAlign: 'center',
+              }}
+            >
+              (Blocks mined last 7 days)
+            </CustomText>
+            <PieChart
+              data={pieChartData}
+              width={width}
+              height={220}
+              chartConfig={chartConfig}
+              accessor='blocksMined'
+              backgroundColor={'transparent'}
+              paddingLeft={'15'}
+              center={[10, 10]}
+              absolute
+            />
+          </>
+        )}
+      </ScrollView>
+    </Page>
   )
 }
