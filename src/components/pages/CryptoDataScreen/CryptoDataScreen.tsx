@@ -20,12 +20,15 @@ import { hexToRgb } from 'utils/themes/hexToRgb'
 
 const Y_AXIS_INCREMENT = 5000
 const Y_AXIS_MIN_OFFSET = 0.8
+const PROGRESS_CHART_COLORS = ['#F79319', '#4C00AF', '#009393']
+const CHART_COLORS = ['#BFFFF0', '#F0FFC2', '#FFE4C0', '#FFBBBB', '#C1F4C5', '#65C18C', '#FF7BA9']
 
 export const CryptoDataScreen = () => {
   const insets = useSafeAreaInsets()
   const theme = useTheme()
 
   const primaryRgb = hexToRgb(theme.colors.primary)
+  const textRgb = hexToRgb(theme.colors.text)
 
   const chartConfig: AbstractChartConfig = {
     backgroundColor: theme.colors.background,
@@ -35,6 +38,8 @@ export const CryptoDataScreen = () => {
       `rgba(${
         primaryRgb ? `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}` : '0, 0, 0'
       }, ${opacity})`,
+    labelColor: (opacity) =>
+      `rgba(${textRgb ? `${textRgb.r}, ${textRgb.g}, ${textRgb.b}` : '0, 0, 0'}, ${opacity})`,
     style: {
       borderRadius: 16,
       marginVertical: 8,
@@ -45,7 +50,7 @@ export const CryptoDataScreen = () => {
     },
   }
 
-  const width = Dimensions.get('window').width
+  const width = Dimensions.get('window').width - 20
   const height = 220
   const labelStyle: TextProps['style'] = {
     marginVertical: 10,
@@ -106,11 +111,10 @@ export const CryptoDataScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       const hashrateDistribution = await getHashRateDistribution()
-      const colors = ['#BFFFF0', '#F0FFC2', '#FFE4C0', '#FFBBBB', '#C1F4C5', '#65C18C', '#FF7BA9']
       const formattedHashrateData = Object.entries(hashrateDistribution).map(([key, value], i) => ({
         name: key,
         blocksMined: value,
-        color: colors[i],
+        color: CHART_COLORS[i],
         legendFontColor: theme.colors.text,
       }))
       setPieChartData(formattedHashrateData)
@@ -130,7 +134,10 @@ export const CryptoDataScreen = () => {
           a.data.push(coinData.market_cap / totalMarketCap)
           return a
         },
-        { labels: [], data: [] },
+        {
+          labels: [],
+          data: [],
+        },
       )
       setProgressChartData(formattedProgressChartData)
     }
@@ -138,99 +145,115 @@ export const CryptoDataScreen = () => {
   }, [])
 
   return (
-    <CustomView
-      style={{
+    <ScrollView
+      contentContainerStyle={{
+        display: 'flex',
+        justifyContent: 'center',
         backgroundColor: chartConfig.backgroundColor,
         paddingBottom: insets.bottom,
+        alignItems: 'center',
       }}
     >
-      <ScrollView>
-        {marketPriceGraphData.length > 0 && (
-          <>
-            <CustomText style={labelStyle}>Market Price</CustomText>
-            <LineChart
-              bezier
-              data={{
-                labels: marketPriceGraphLabels,
-                datasets: [
-                  { data: marketPriceGraphData },
-                  {
-                    data: [
-                      Math.round(
-                        (Math.min(...marketPriceGraphData) * Y_AXIS_MIN_OFFSET) / Y_AXIS_INCREMENT,
-                      ) * Y_AXIS_INCREMENT,
-                    ],
-                    withDots: false,
-                  },
-                  {
-                    data: [
-                      Math.round(Math.max(...marketPriceGraphData) / Y_AXIS_INCREMENT) *
-                        Y_AXIS_INCREMENT,
-                    ],
-                    withDots: false,
-                  },
-                ],
-              }}
-              width={width}
-              height={height}
-              chartConfig={chartConfig}
-              style={chartConfig.style}
-              yAxisInterval={10}
-              formatYLabel={(value) => `$${value}`}
-            />
-          </>
-        )}
-        {progressChartData.data.length > 0 && (
-          <>
-            <CustomText style={labelStyle}>Market Capitalization</CustomText>
-            <ProgressChart
-              data={progressChartData}
-              width={width}
-              height={220}
-              strokeWidth={12}
-              radius={32}
-              chartConfig={chartConfig}
-            />
-          </>
-        )}
-        {contributionGraphData.length > 0 && (
-          <>
-            <CustomText style={labelStyle}>Mempool Transaction Count</CustomText>
-            <ContributionGraph
-              values={contributionGraphData}
-              width={width}
-              height={height}
-              numDays={contributionGraphData.length}
-              chartConfig={chartConfig}
-              style={chartConfig.style}
-              tooltipDataAttrs={() => ({})}
-            />
-          </>
-        )}
-        {pieChartData.length > 0 && (
-          <>
-            <CustomText style={labelStyle}>Hashrate Distribution by Pool</CustomText>
-            <CustomText
-              style={{
-                textAlign: 'center',
-              }}
-            >
-              (Blocks mined last 7 days)
-            </CustomText>
-            <PieChart
-              data={pieChartData}
-              width={width}
-              height={220}
-              chartConfig={chartConfig}
-              accessor='blocksMined'
-              backgroundColor={'transparent'}
-              paddingLeft={'15'}
-              center={[10, 10]}
-              absolute
-            />
-          </>
-        )}
-      </ScrollView>
-    </CustomView>
+      {marketPriceGraphData.length > 0 && (
+        <>
+          <CustomText style={labelStyle}>Market Price</CustomText>
+          <LineChart
+            bezier
+            data={{
+              labels: marketPriceGraphLabels,
+              datasets: [
+                { data: marketPriceGraphData },
+                {
+                  data: [
+                    Math.round(
+                      (Math.min(...marketPriceGraphData) * Y_AXIS_MIN_OFFSET) / Y_AXIS_INCREMENT,
+                    ) * Y_AXIS_INCREMENT,
+                  ],
+                  withDots: false,
+                },
+                {
+                  data: [
+                    Math.round(Math.max(...marketPriceGraphData) / Y_AXIS_INCREMENT) *
+                      Y_AXIS_INCREMENT,
+                  ],
+                  withDots: false,
+                },
+              ],
+            }}
+            width={width}
+            height={height}
+            chartConfig={chartConfig}
+            style={chartConfig.style}
+            yAxisInterval={10}
+            formatYLabel={(value) =>
+              `${Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                parseInt(value, 10),
+              )}`.slice(0, -3)
+            }
+          />
+        </>
+      )}
+      {progressChartData.data.length > 0 && (
+        <>
+          <CustomText style={labelStyle}>Market Capitalization</CustomText>
+          <ProgressChart
+            data={progressChartData}
+            width={width}
+            height={220}
+            strokeWidth={12}
+            radius={32}
+            chartConfig={{
+              ...chartConfig,
+              color: (opacity, index) => {
+                const { r, g, b } = hexToRgb(PROGRESS_CHART_COLORS[index || 0]) || {
+                  r: 0,
+                  g: 0,
+                  b: 0,
+                }
+                return `rgba(${r}, ${g}, ${b}, ${opacity})`
+              },
+            }}
+          />
+        </>
+      )}
+      {contributionGraphData.length > 0 && (
+        <>
+          <CustomText style={labelStyle}>Mempool Transaction Count</CustomText>
+          <ContributionGraph
+            values={contributionGraphData}
+            width={width}
+            height={height}
+            numDays={contributionGraphData.length}
+            squareSize={width / 20}
+            chartConfig={chartConfig}
+            style={chartConfig.style}
+            tooltipDataAttrs={() => ({})}
+          />
+        </>
+      )}
+      {pieChartData.length > 0 && (
+        <>
+          <CustomText style={labelStyle}>Hashrate Distribution by Pool</CustomText>
+          <CustomText
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            (Blocks mined last 7 days)
+          </CustomText>
+          <PieChart
+            data={pieChartData}
+            width={width}
+            height={220}
+            chartConfig={chartConfig}
+            accessor='blocksMined'
+            backgroundColor={'transparent'}
+            paddingLeft={'15'}
+            center={[10, 10]}
+            absolute
+          />
+        </>
+      )}
+    </ScrollView>
   )
 }
