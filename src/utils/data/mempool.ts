@@ -2,7 +2,7 @@ export const formatUnixTimestamp = (timestamp: number, start = 0, end = 10): str
   try {
     return new Date(timestamp * 1000).toISOString().slice(start, end)
   } catch (e) {
-    console.log('Error formatting timestamp')
+    console.log('Error formatting timestamp', e)
     return ''
   }
 }
