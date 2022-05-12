@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, ScrollView, Text, View } from 'react-native'
+import { Dimensions, ScrollView, TextProps } from 'react-native'
 import { ContributionGraph, LineChart, PieChart, ProgressChart } from 'react-native-chart-kit'
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+import { CustomText } from 'common/CustomText'
+import { CustomView } from 'common/CustomView'
+
+import { useTheme } from 'contexts/ThemeContext'
 
 import {
   getHashRateDistribution,
@@ -10,36 +16,41 @@ import {
   getMempoolCount,
 } from 'utils/api/get'
 import { formatUnixTimestamp, getAvgMempoolCount } from 'utils/data/mempool'
+import { hexToRgb } from 'utils/themes/hexToRgb'
 
 const Y_AXIS_INCREMENT = 5000
 const Y_AXIS_MIN_OFFSET = 0.8
 
-const chartConfig: AbstractChartConfig = {
-  backgroundColor: '#FAFAFA',
-  backgroundGradientFrom: '#FAFAFA',
-  backgroundGradientTo: '#FAFAFA',
-  color: (opacity = 1) => `rgba(15, 155, 40, ${opacity})`,
-  style: {
-    borderRadius: 16,
-  },
-  decimalPlaces: 0,
-  propsForDots: {
-    r: '2',
-  },
-}
-
 export const CryptoDataScreen = () => {
+  const insets = useSafeAreaInsets()
+  const theme = useTheme()
+
+  const primaryRgb = hexToRgb(theme.colors.primary)
+
+  const chartConfig: AbstractChartConfig = {
+    backgroundColor: theme.colors.background,
+    backgroundGradientFrom: theme.colors.background,
+    backgroundGradientTo: theme.colors.background,
+    color: (opacity = 1) =>
+      `rgba(${
+        primaryRgb ? `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}` : '0, 0, 0'
+      }, ${opacity})`,
+    style: {
+      borderRadius: 16,
+      marginVertical: 8,
+    },
+    decimalPlaces: 0,
+    propsForDots: {
+      r: '2',
+    },
+  }
+
   const width = Dimensions.get('window').width
   const height = 220
-  const labelStyle = {
-    color: chartConfig?.color?.(1) || 'white',
+  const labelStyle: TextProps['style'] = {
     marginVertical: 10,
     textAlign: 'center',
     fontSize: 16,
-  }
-  const graphStyle = {
-    marginVertical: 8,
-    ...chartConfig.style,
   }
 
   const [marketPriceGraphLabels, setMarketPriceGraphLabels] = useState<string[]>([])
@@ -48,12 +59,12 @@ export const CryptoDataScreen = () => {
     { date: string; count: number }[]
   >([])
   const [pieChartData, setPieChartData] = useState<Record<string, any>[]>([])
-  const [progressChartData, setProgressChartData] = useState<{labels: string[], data: number[]}>({
+  const [progressChartData, setProgressChartData] = useState<{ labels: string[]; data: number[] }>({
     labels: [],
     data: [],
   })
 
-  const getLabels = (
+  const getLineChartLabels = (
     marketPriceData: {
       x: number
       y: number
@@ -77,7 +88,7 @@ export const CryptoDataScreen = () => {
     const fetchData = async () => {
       const marketPriceData = await getMarketPrice()
       const simplifiedPriceData = marketPriceData.filter((value, index) => index % 5 === 0)
-      setMarketPriceGraphLabels(getLabels(simplifiedPriceData))
+      setMarketPriceGraphLabels(getLineChartLabels(simplifiedPriceData))
       setMarketPriceGraphData(simplifiedPriceData.map((value) => value.y))
     }
     fetchData()
@@ -96,28 +107,24 @@ export const CryptoDataScreen = () => {
     const fetchData = async () => {
       const hashrateDistribution = await getHashRateDistribution()
       const colors = ['#BFFFF0', '#F0FFC2', '#FFE4C0', '#FFBBBB', '#C1F4C5', '#65C18C', '#FF7BA9']
-      const formattedHashrateData = Object.entries(hashrateDistribution).map(([key, value], i) => {
-        return {
-          name: key,
-          blocksMined: value,
-          color: colors[i],
-          legendFontColor: '#405979',
-        }
-      })
+      const formattedHashrateData = Object.entries(hashrateDistribution).map(([key, value], i) => ({
+        name: key,
+        blocksMined: value,
+        color: colors[i],
+        legendFontColor: theme.colors.text,
+      }))
       setPieChartData(formattedHashrateData)
     }
     fetchData()
-  }, [])
+  }, [theme.colors.text])
 
   useEffect(() => {
     const fetchData = async () => {
       const marketCapData = await getMarketCap()
       const coinEntries = Object.entries(marketCapData)
-      const totalMarketCap: number = coinEntries.reduce((a, b) => {
-        return a + b[1].market_cap
-      }, 0)
+      const totalMarketCap: number = coinEntries.reduce((a, b) => a + b[1].market_cap, 0)
       const formattedProgressChartData = coinEntries.slice(0, 3).reduce(
-        (a: {labels: string[], data: number[]}, b) => {
+        (a: { labels: string[]; data: number[] }, b) => {
           const coinData = b[1]
           a.labels.push(coinData.symbol.toUpperCase())
           a.data.push(coinData.market_cap / totalMarketCap)
@@ -131,17 +138,16 @@ export const CryptoDataScreen = () => {
   }, [])
 
   return (
-    <>
-      <ScrollView
-        key={Math.random()}
-        style={{
-          backgroundColor: chartConfig.backgroundColor,
-          paddingTop: 25,
-        }}
-      >
+    <CustomView
+      style={{
+        backgroundColor: chartConfig.backgroundColor,
+        paddingBottom: insets.bottom,
+      }}
+    >
+      <ScrollView>
         {marketPriceGraphData.length > 0 && (
           <>
-            <Text style={labelStyle}>Market Price</Text>
+            <CustomText style={labelStyle}>Market Price</CustomText>
             <LineChart
               bezier
               data={{
@@ -168,7 +174,7 @@ export const CryptoDataScreen = () => {
               width={width}
               height={height}
               chartConfig={chartConfig}
-              style={graphStyle}
+              style={chartConfig.style}
               yAxisInterval={10}
               formatYLabel={(value) => `$${value}`}
             />
@@ -176,7 +182,7 @@ export const CryptoDataScreen = () => {
         )}
         {progressChartData.data.length > 0 && (
           <>
-            <Text style={labelStyle}>Market Capitalization</Text>
+            <CustomText style={labelStyle}>Market Capitalization</CustomText>
             <ProgressChart
               data={progressChartData}
               width={width}
@@ -189,24 +195,28 @@ export const CryptoDataScreen = () => {
         )}
         {contributionGraphData.length > 0 && (
           <>
-            <Text style={labelStyle}>Mempool Transaction Count</Text>
+            <CustomText style={labelStyle}>Mempool Transaction Count</CustomText>
             <ContributionGraph
               values={contributionGraphData}
               width={width}
               height={height}
               numDays={contributionGraphData.length}
               chartConfig={chartConfig}
-              style={graphStyle}
+              style={chartConfig.style}
               tooltipDataAttrs={() => ({})}
             />
           </>
         )}
         {pieChartData.length > 0 && (
           <>
-            <Text style={labelStyle}>Hashrate Distribution by Pool</Text>
-            <Text style={{ ...labelStyle, marginVertical: 0, fontSize: 12 }}>
+            <CustomText style={labelStyle}>Hashrate Distribution by Pool</CustomText>
+            <CustomText
+              style={{
+                textAlign: 'center',
+              }}
+            >
               (Blocks mined last 7 days)
-            </Text>
+            </CustomText>
             <PieChart
               data={pieChartData}
               width={width}
@@ -220,9 +230,7 @@ export const CryptoDataScreen = () => {
             />
           </>
         )}
-        {/* Extra space for easier scrolling */}
-        <View style={{ height: 100 }} />
       </ScrollView>
-    </>
+    </CustomView>
   )
 }
