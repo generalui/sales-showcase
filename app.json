@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "sales-showcase",
-    "slug": "sales-showcase",
+    "name": "showcase",
+    "slug": "showcase",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "genui",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
