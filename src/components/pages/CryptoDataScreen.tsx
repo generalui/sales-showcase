@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Dimensions, ScrollView, Text, View } from 'react-native'
-import { ContributionGraph, LineChart, PieChart } from 'react-native-chart-kit'
+import { ContributionGraph, LineChart, PieChart, ProgressChart } from 'react-native-chart-kit'
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart'
 
-import { getHashRateDistribution, getMarketPrice, getMempoolCount } from 'utils/api/get'
+import {
+  getHashRateDistribution,
+  getMarketCap,
+  getMarketPrice,
+  getMempoolCount,
+} from 'utils/api/get'
 import { formatUnixTimestamp, getAvgMempoolCount } from 'utils/data/mempool'
 
 const Y_AXIS_INCREMENT = 5000
@@ -43,6 +48,10 @@ export const CryptoDataScreen = () => {
     { date: string; count: number }[]
   >([])
   const [pieChartData, setPieChartData] = useState<Record<string, any>[]>([])
+  const [progressChartData, setProgressChartData] = useState<{labels: string[], data: number[]}>({
+    labels: [],
+    data: [],
+  })
 
   const getLabels = (
     marketPriceData: {
@@ -50,6 +59,8 @@ export const CryptoDataScreen = () => {
       y: number
     }[],
   ) => {
+    if (marketPriceData.length === 0) return []
+
     const numLabels = 6
     const numDataPoints = marketPriceData.length
     const spaceBetweenLabels = Math.floor(numDataPoints / numLabels)
@@ -98,6 +109,27 @@ export const CryptoDataScreen = () => {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const marketCapData = await getMarketCap()
+      const coinEntries = Object.entries(marketCapData)
+      const totalMarketCap: number = coinEntries.reduce((a, b) => {
+        return a + b[1].market_cap
+      }, 0)
+      const formattedProgressChartData = coinEntries.slice(0, 3).reduce(
+        (a: {labels: string[], data: number[]}, b) => {
+          const coinData = b[1]
+          a.labels.push(coinData.symbol.toUpperCase())
+          a.data.push(coinData.market_cap / totalMarketCap)
+          return a
+        },
+        { labels: [], data: [] },
+      )
+      setProgressChartData(formattedProgressChartData)
+    }
+    fetchData()
+  }, [])
+
   return (
     <>
       <ScrollView
@@ -107,62 +139,87 @@ export const CryptoDataScreen = () => {
           paddingTop: 25,
         }}
       >
-        <Text style={labelStyle}>Market Price</Text>
-        <LineChart
-          bezier
-          data={{
-            labels: marketPriceGraphLabels,
-            datasets: [
-              { data: marketPriceGraphData },
-              {
-                data: [
-                  Math.round(
-                    (Math.min(...marketPriceGraphData) * Y_AXIS_MIN_OFFSET) / Y_AXIS_INCREMENT,
-                  ) * Y_AXIS_INCREMENT,
+        {marketPriceGraphData.length > 0 && (
+          <>
+            <Text style={labelStyle}>Market Price</Text>
+            <LineChart
+              bezier
+              data={{
+                labels: marketPriceGraphLabels,
+                datasets: [
+                  { data: marketPriceGraphData },
+                  {
+                    data: [
+                      Math.round(
+                        (Math.min(...marketPriceGraphData) * Y_AXIS_MIN_OFFSET) / Y_AXIS_INCREMENT,
+                      ) * Y_AXIS_INCREMENT,
+                    ],
+                    withDots: false,
+                  },
+                  {
+                    data: [
+                      Math.round(Math.max(...marketPriceGraphData) / Y_AXIS_INCREMENT) *
+                        Y_AXIS_INCREMENT,
+                    ],
+                    withDots: false,
+                  },
                 ],
-                withDots: false,
-              },
-              {
-                data: [
-                  Math.round(Math.max(...marketPriceGraphData) / Y_AXIS_INCREMENT) *
-                    Y_AXIS_INCREMENT,
-                ],
-                withDots: false,
-              },
-            ],
-          }}
-          width={width}
-          height={height}
-          chartConfig={chartConfig}
-          style={graphStyle}
-          yAxisInterval={10}
-          formatYLabel={(value) => `$${value}`}
-        />
-        <Text style={labelStyle}>Mempool Transaction Count</Text>
-        <ContributionGraph
-          values={contributionGraphData}
-          width={width}
-          height={height}
-          numDays={contributionGraphData.length}
-          chartConfig={chartConfig}
-          style={graphStyle}
-          tooltipDataAttrs={() => ({})}
-        />
-        <Text style={labelStyle}>Hashrate Distribution by Pool</Text>
-        <Text style={{ ...labelStyle, marginVertical: 0, fontSize: 12 }}>
-          (Blocks mined last 7 days)
-        </Text>
-        <PieChart
-          data={pieChartData}
-          width={width}
-          height={220}
-          chartConfig={chartConfig}
-          accessor='blocksMined'
-          backgroundColor={'transparent'}
-          paddingLeft={'15'}
-          center={[10, 10]}
-          absolute
-        />
+              }}
+              width={width}
+              height={height}
+              chartConfig={chartConfig}
+              style={graphStyle}
+              yAxisInterval={10}
+              formatYLabel={(value) => `$${value}`}
+            />
+          </>
+        )}
+        {progressChartData.data.length > 0 && (
+          <>
+            <Text style={labelStyle}>Market Capitalization</Text>
+            <ProgressChart
+              data={progressChartData}
+              width={width}
+              height={220}
+              strokeWidth={12}
+              radius={32}
+              chartConfig={chartConfig}
+            />
+          </>
+        )}
+        {contributionGraphData.length > 0 && (
+          <>
+            <Text style={labelStyle}>Mempool Transaction Count</Text>
+            <ContributionGraph
+              values={contributionGraphData}
+              width={width}
+              height={height}
+              numDays={contributionGraphData.length}
+              chartConfig={chartConfig}
+              style={graphStyle}
+              tooltipDataAttrs={() => ({})}
+            />
+          </>
+        )}
+        {pieChartData.length > 0 && (
+          <>
+            <Text style={labelStyle}>Hashrate Distribution by Pool</Text>
+            <Text style={{ ...labelStyle, marginVertical: 0, fontSize: 12 }}>
+              (Blocks mined last 7 days)
+            </Text>
+            <PieChart
+              data={pieChartData}
+              width={width}
+              height={220}
+              chartConfig={chartConfig}
+              accessor='blocksMined'
+              backgroundColor={'transparent'}
+              paddingLeft={'15'}
+              center={[10, 10]}
+              absolute
+            />
+          </>
+        )}
         {/* Extra space for easier scrolling */}
         <View style={{ height: 100 }} />
       </ScrollView>

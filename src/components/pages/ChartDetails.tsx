@@ -28,6 +28,14 @@ export const ChartDetails = () => (
       </CustomText>
     </CustomView>
     <CustomView style={styles.container}>
+      <CustomText style={styles.title}>Market Capitalization</CustomText>
+      <CustomText>
+        The total USD value of all coins in circulation for a given currency. The three currencies
+        with the largest market capitalization are shown whereas the total market capitalization is
+        calculated on the top ~250 coins (greatest to least capitalization).
+      </CustomText>
+    </CustomView>
+    <CustomView style={styles.container}>
       <CustomText style={styles.title}>Hashrate Distribution</CustomText>
       <CustomText>
         A mining pool is a group of miners who share their computing power over a network and get
