@@ -3,6 +3,13 @@ import { Dimensions } from 'react-native'
 import { ContributionGraph, LineChart, PieChart, ProgressChart } from 'react-native-chart-kit'
 import { AbstractChartConfig } from 'react-native-chart-kit/dist/AbstractChart'
 
+import {
+  CHART_COLORS,
+  PROGRESS_CHART_COLORS,
+  Y_AXIS_INCREMENT,
+  Y_AXIS_MIN_OFFSET,
+} from 'partials/CryptoData/constants'
+
 import { useTheme } from 'contexts/ThemeContext'
 
 import {
@@ -15,11 +22,6 @@ import { formatUnixTimestamp, getAvgMempoolCount } from 'utils/data/mempool'
 import { hexToRgb } from 'utils/themes/hexToRgb'
 
 import { Title } from './styled'
-
-const Y_AXIS_INCREMENT = 5000
-const Y_AXIS_MIN_OFFSET = 0.8
-const PROGRESS_CHART_COLORS = ['#F79319', '#4C00AF', '#009393']
-const CHART_COLORS = ['#BFFFF0', '#F0FFC2', '#FFE4C0', '#FFBBBB', '#C1F4C5', '#65C18C', '#FF7BA9']
 
 export const CryptoData = () => {
   const theme = useTheme()
