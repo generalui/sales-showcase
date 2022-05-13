@@ -11,7 +11,7 @@ import { NotFoundScreen } from 'pages/NotFoundScreen'
 
 import { useTheme } from 'contexts/ThemeContext'
 
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from 'types/navigation'
+import { RootStackParamList, RootTabParamList } from 'types/navigation'
 
 import LinkingConfiguration from './LinkingConfiguration'
 
@@ -55,7 +55,7 @@ const BottomTabNavigator = () => {
           headerStyle: {
             backgroundColor: theme.colors.header,
           },
-          headerTintColor: theme.colors.text,
+          headerTintColor: theme.colors.textInverted,
           title: 'Bitcoin Explorer',
           tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
           headerRight: () => (
@@ -68,7 +68,7 @@ const BottomTabNavigator = () => {
               <FontAwesome
                 name='info-circle'
                 size={25}
-                color={theme.colors.text}
+                color={theme.colors.textInverted}
                 style={{ marginRight: 15 }}
               />
             </Pressable>

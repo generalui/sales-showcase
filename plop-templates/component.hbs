@@ -1,12 +1,12 @@
 import React from 'react'
 
-import { Text } from 'widgets/Text'
+import { CustomText } from 'common/CustomText'
 
 import { Styled{{pascalCase name}} } from './styled'
 import { Props } from './types'
 
 export const {{pascalCase name}} = (props: Props) => (
-  <Styled{{pascalCase name}}>
-    <Text>Hello there</Text>
+  <Styled{{pascalCase name}} {...props}>
+    <CustomText>Hello world!</CustomText>
   </Styled{{pascalCase name}}>
 )
