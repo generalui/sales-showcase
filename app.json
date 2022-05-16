@@ -15,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.genui.showcase"
@@ -29,7 +27,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/images/favicon.webp"
+      "favicon": "./assets/images/favicon.png"
     }
   }
 }
