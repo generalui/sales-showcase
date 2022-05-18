@@ -1,5 +1,4 @@
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
-import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native'
+import { NavigatorScreenParams } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
 declare global {
@@ -10,7 +9,8 @@ declare global {
 }
 
 export type RootStackParamList = {
-  Root: NavigatorScreenParams<RootTabParamList> | undefined
+  Root: undefined
+  Demo: NavigatorScreenParams<RootTabParamList> | undefined
   'Chart Details': undefined
   NotFound: undefined
 }
@@ -21,11 +21,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 >
 
 export type RootTabParamList = {
-  TabOne: undefined
   CryptoData: undefined
 }
 
-export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
-  BottomTabScreenProps<RootTabParamList, Screen>,
-  NativeStackScreenProps<RootStackParamList>
->
+export type RootTabScreenProps = NativeStackScreenProps<RootStackParamList>
