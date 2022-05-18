@@ -12,9 +12,9 @@ const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [Linking.makeUrl('/')],
   config: {
     screens: {
-      Root: {
+      Demo: {
         screens: {
-          CryptoData: 'one',
+          CryptoData: 'crypto',
         },
       },
       'Chart Details': 'modal',

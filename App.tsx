@@ -17,7 +17,7 @@ export default () => {
       <ThemeProvider>
         <SafeAreaProvider>
           <Navigation />
-          <StatusBar style='light' />
+          <StatusBar />
         </SafeAreaProvider>
       </ThemeProvider>
     )

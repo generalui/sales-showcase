@@ -1,5 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
@@ -23,63 +23,47 @@ export const Navigation = () => (
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
-const RootNavigator = () => (
-  <Stack.Navigator>
-    <Stack.Screen name='Root' component={BottomTabNavigator} options={{ headerShown: false }} />
-    <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
-    <Stack.Group screenOptions={{ presentation: 'modal' }}>
-      <Stack.Screen name='Chart Details' component={ChartDetails} />
-    </Stack.Group>
-  </Stack.Navigator>
-)
-
-const BottomTab = createBottomTabNavigator<RootTabParamList>()
-
-const BottomTabNavigator = () => {
+const RootNavigator = () => {
   const theme = useTheme()
-
   return (
-    <BottomTab.Navigator
-      initialRouteName='CryptoData'
-      tabBar={() => <></>}
+    <Stack.Navigator
       screenOptions={{
-        tabBarStyle: { backgroundColor: theme.colors.header },
-        tabBarActiveTintColor: theme.colors.primary,
-        tabBarInactiveTintColor: theme.colors.text,
+        headerBackTitle: '',
+        headerStyle: {
+          backgroundColor: theme.colors.header,
+        },
+        headerTintColor: theme.colors.textInverted,
       }}
     >
-      <BottomTab.Screen
-        name='CryptoData'
-        component={CryptoDataScreen}
-        options={({ navigation }) => ({
-          headerStyle: {
-            backgroundColor: theme.colors.header,
-          },
-          headerTintColor: theme.colors.textInverted,
-          title: 'Bitcoin Explorer',
-          tabBarIcon: ({ color }) => <TabBarIcon name='code' color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Chart Details')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name='info-circle'
-                size={25}
-                color={theme.colors.textInverted}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
-      />
-    </BottomTab.Navigator>
+      <Stack.Screen name='Demo' component={DemoStackNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name='Chart Details' component={ChartDetails} />
+      </Stack.Group>
+    </Stack.Navigator>
   )
 }
 
-const TabBarIcon = (props: {
-  name: React.ComponentProps<typeof FontAwesome>['name']
-  color: string
-}) => <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />
+const Drawer = createDrawerNavigator<RootTabParamList>()
+
+const DemoStackNavigator = () => (
+  <Drawer.Navigator initialRouteName='CryptoData'>
+    <Drawer.Screen
+      name='CryptoData'
+      component={CryptoDataScreen}
+      options={({ navigation }) => ({
+        title: 'Bitcoin Explorer',
+        headerRight: () => (
+          <Pressable
+            onPress={() => navigation.navigate('Chart Details')}
+            style={({ pressed }) => ({
+              opacity: pressed ? 0.5 : 1,
+            })}
+          >
+            <FontAwesome name='info-circle' size={25} style={{ marginRight: 15 }} />
+          </Pressable>
+        ),
+      })}
+    />
+  </Drawer.Navigator>
+)
