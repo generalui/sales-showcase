@@ -47,20 +47,20 @@ const RootNavigator = () => {
 const Drawer = createDrawerNavigator<RootTabParamList>()
 
 const DemoStackNavigator = () => (
-  <Drawer.Navigator initialRouteName='CryptoData'>
+  <Drawer.Navigator initialRouteName='Bitcoin Explorer'>
     <Drawer.Screen
-      name='CryptoData'
+      name='Bitcoin Explorer'
       component={CryptoDataScreen}
       options={({ navigation }) => ({
-        title: 'Bitcoin Explorer',
         headerRight: () => (
           <Pressable
             onPress={() => navigation.navigate('Chart Details')}
             style={({ pressed }) => ({
+              paddingRight: 15,
               opacity: pressed ? 0.5 : 1,
             })}
           >
-            <FontAwesome name='info-circle' size={25} style={{ marginRight: 15 }} />
+            <FontAwesome name='info-circle' size={25} />
           </Pressable>
         ),
       })}

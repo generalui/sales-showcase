@@ -14,7 +14,7 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Demo: {
         screens: {
-          CryptoData: 'crypto',
+          'Bitcoin Explorer': 'bitcoin-explorer',
         },
       },
       'Chart Details': 'modal',

@@ -21,7 +21,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 >
 
 export type RootTabParamList = {
-  CryptoData: undefined
+  'Bitcoin Explorer': undefined
 }
 
 export type RootTabScreenProps = NativeStackScreenProps<RootStackParamList>
