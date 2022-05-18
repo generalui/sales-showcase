@@ -1,21 +1,24 @@
 import React from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
 
 import { CryptoData } from 'partials/CryptoData'
-import { Page } from 'partials/Page'
+import { Project } from 'partials/Project'
 
 export const CryptoDataScreen = () => (
-  <Page>
-    <ScrollView contentContainerStyle={styles.container}>
-      <CryptoData />
-    </ScrollView>
-  </Page>
+  <Project
+    createdAt='1652915213'
+    createdBy='grayson073'
+    demo={<CryptoData />}
+    name='Bitcoin Explorer'
+    details={{
+      description: 'A simple cryptocurrency tracker',
+      technologies: ['React Native', 'Styled Components', 'TypeScript', 'React Native Chart Kit'],
+      links: [
+        'https://github.com/generalui/sales-showcase/tree/main/src/components/partials/CryptoData',
+      ],
+      negatives: [
+        'Charting can be more difficult in React Native due to limited charting libraries',
+      ],
+      positives: ['React Native is simple to spin up and use'],
+    }}
+  />
 )
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 20,
-  },
-})

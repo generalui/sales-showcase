@@ -26,15 +26,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 const RootNavigator = () => {
   const theme = useTheme()
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerBackTitle: '',
-        headerStyle: {
-          backgroundColor: theme.colors.header,
-        },
-        headerTintColor: theme.colors.textInverted,
-      }}
-    >
+    <Stack.Navigator>
       <Stack.Screen name='Demo' component={DemoStackNavigator} options={{ headerShown: false }} />
       <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -46,24 +38,36 @@ const RootNavigator = () => {
 
 const Drawer = createDrawerNavigator<RootTabParamList>()
 
-const DemoStackNavigator = () => (
-  <Drawer.Navigator initialRouteName='Bitcoin Explorer'>
-    <Drawer.Screen
-      name='Bitcoin Explorer'
-      component={CryptoDataScreen}
-      options={({ navigation }) => ({
-        headerRight: () => (
-          <Pressable
-            onPress={() => navigation.navigate('Chart Details')}
-            style={({ pressed }) => ({
-              paddingRight: 15,
-              opacity: pressed ? 0.5 : 1,
-            })}
-          >
-            <FontAwesome name='info-circle' size={25} />
-          </Pressable>
-        ),
-      })}
-    />
-  </Drawer.Navigator>
-)
+const DemoStackNavigator = () => {
+  const theme = useTheme()
+
+  return (
+    <Drawer.Navigator
+      initialRouteName='Bitcoin Explorer'
+      screenOptions={{
+        drawerActiveTintColor: theme.colors.primary,
+        drawerInactiveTintColor: theme.colors.text,
+        headerTintColor: theme.colors.text,
+      }}
+    >
+      <Drawer.Screen
+        name='Bitcoin Explorer'
+        component={CryptoDataScreen}
+        options={({ navigation }) => ({
+          drawerIcon: ({ color }) => <FontAwesome name='bitcoin' size={24} color={color} />,
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('Chart Details')}
+              style={({ pressed }) => ({
+                paddingRight: 15,
+                opacity: pressed ? 0.5 : 1,
+              })}
+            >
+              <FontAwesome name='info-circle' size={25} />
+            </Pressable>
+          ),
+        })}
+      />
+    </Drawer.Navigator>
+  )
+}
