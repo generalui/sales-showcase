@@ -30,9 +30,9 @@ export const CryptoData = () => {
   const textRgb = hexToRgb(theme.colors.text)
 
   const chartConfig: AbstractChartConfig = {
-    backgroundColor: theme.colors.background,
-    backgroundGradientFrom: theme.colors.background,
-    backgroundGradientTo: theme.colors.background,
+    backgroundColor: theme.colors.standoutBackground,
+    backgroundGradientFrom: theme.colors.standoutBackground,
+    backgroundGradientTo: theme.colors.standoutBackground,
     color: (opacity = 1) =>
       `rgba(${
         primaryRgb ? `${primaryRgb.r}, ${primaryRgb.g}, ${primaryRgb.b}` : '0, 0, 0'
@@ -227,9 +227,10 @@ export const CryptoData = () => {
             height={220}
             chartConfig={chartConfig}
             accessor='blocksMined'
-            backgroundColor={'transparent'}
+            backgroundColor={chartConfig.backgroundColor || theme.colors.standoutBackground}
             paddingLeft={'15'}
             center={[10, 10]}
+            style={chartConfig.style}
             absolute
           />
         </>

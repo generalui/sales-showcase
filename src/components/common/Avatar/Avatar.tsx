@@ -1,8 +1,10 @@
 import React from 'react'
 
-import { CustomText } from 'common/CustomText'
-
-import { StyledAvatar } from './styled'
+import { AvatarContainer, AvatarImage } from './styled'
 import { Props } from './types'
 
-export const Avatar = ({ source }: Props) => <StyledAvatar source={{ uri: source }} />
+export const Avatar = ({ source }: Props) => (
+  <AvatarContainer>
+    <AvatarImage source={{ uri: source }} />
+  </AvatarContainer>
+)

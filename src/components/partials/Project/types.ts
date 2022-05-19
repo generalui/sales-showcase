@@ -1,10 +1,10 @@
 import React from 'react'
 
-type GithubUsername = 'grayson073' | 'jasepellerin' | 'wesvance'
+import { contributors } from 'utils/data/contributors'
 
 export interface Props {
-  createdBy: GithubUsername
-  createdAt: string
+  createdBy: keyof typeof contributors
+  createdAt: number
   demo: React.ReactNode
   details: {
     description: string
