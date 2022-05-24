@@ -1,3 +1,5 @@
+import { ContributorName } from 'utils/data/contributors'
+
 export interface Props {
-  source: string
+  contributorName: ContributorName
 }

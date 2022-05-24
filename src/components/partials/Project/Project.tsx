@@ -6,19 +6,12 @@ import { Page } from 'partials/Page'
 
 import { CustomText } from 'common/CustomText'
 
-import { getContributor } from 'utils/data/contributors'
-import { getContributorGithubAvatar } from 'utils/data/getContributorGithubAvatar'
-
 import { Props } from './types'
 
 export const Project = ({ createdAt, createdBy, demo, details }: Props) => (
   <Page>
     <ScrollView contentContainerStyle={styles.container}>
-      <Card
-        avatarUrl={getContributorGithubAvatar(createdBy)}
-        createdAt={createdAt}
-        createdBy={getContributor(createdBy).name}
-      >
+      <Card contributorName={createdBy} createdAt={createdAt}>
         <CustomText>{details.description}</CustomText>
       </Card>
       {demo}

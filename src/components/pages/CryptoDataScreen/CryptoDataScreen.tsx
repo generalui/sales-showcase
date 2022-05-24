@@ -5,7 +5,7 @@ import { Project } from 'partials/Project'
 
 export const CryptoDataScreen = () => (
   <Project
-    createdAt={1652915213}
+    createdAt={1652915213000}
     createdBy='kevin-grayson'
     demo={<CryptoData />}
     name='Bitcoin Explorer'

@@ -1,6 +1,7 @@
+import { ContributorName } from 'utils/data/contributors'
+
 export interface Props {
-  avatarUrl?: string
+  contributorName: ContributorName
   children: React.ReactNode
   createdAt: number
-  createdBy: string
 }

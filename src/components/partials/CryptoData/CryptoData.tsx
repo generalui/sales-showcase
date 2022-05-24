@@ -188,6 +188,7 @@ export const CryptoData = () => {
             height={220}
             strokeWidth={12}
             radius={32}
+            style={chartConfig.style}
             chartConfig={{
               ...chartConfig,
               color: (opacity, index) => {

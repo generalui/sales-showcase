@@ -23,18 +23,15 @@ export const Navigation = () => (
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
-const RootNavigator = () => {
-  const theme = useTheme()
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name='Demo' component={DemoStackNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name='Chart Details' component={ChartDetails} />
-      </Stack.Group>
-    </Stack.Navigator>
-  )
-}
+const RootNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen name='Demo' component={DemoStackNavigator} options={{ headerShown: false }} />
+    <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
+    <Stack.Group screenOptions={{ presentation: 'modal' }}>
+      <Stack.Screen name='Chart Details' component={ChartDetails} />
+    </Stack.Group>
+  </Stack.Navigator>
+)
 
 const Drawer = createDrawerNavigator<RootTabParamList>()
 

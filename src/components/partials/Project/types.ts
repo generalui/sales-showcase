@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { contributors } from 'utils/data/contributors'
+import { ContributorName } from 'utils/data/contributors'
 
 export interface Props {
-  createdBy: keyof typeof contributors
+  createdBy: ContributorName
   createdAt: number
   demo: React.ReactNode
   details: {
