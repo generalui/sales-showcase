@@ -12,4 +12,4 @@ A collection of demos and showcases to help sales engage with prospective client
 
 ## Deployment
 
-:warning: WIP, based on [this documentation](https://docs.expo.dev/build/setup/)
+:construction: WIP, based on [this documentation](https://docs.expo.dev/build/setup/)
