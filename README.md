@@ -12,4 +12,6 @@ A collection of demos and showcases to help sales engage with prospective client
 
 ## Deployment
 
-:construction: WIP, based on [this documentation](https://docs.expo.dev/build/setup/)
+:construction: WIP, based on documentation for [building](https://docs.expo.dev/build/setup/) and [internal distribution](https://docs.expo.dev/build/internal-distribution/)
+
+:computer: It looks like we need a paid Apple Developer account to continue down this path
