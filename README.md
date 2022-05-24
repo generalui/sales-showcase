@@ -1,4 +1,4 @@
-# sales-showcase
+# Sales Showcase
 A collection of demos and showcases to help sales engage with prospective clients
 
 ## Setup process
