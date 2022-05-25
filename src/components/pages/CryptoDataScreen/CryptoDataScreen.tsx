@@ -10,7 +10,8 @@ export const CryptoDataScreen = () => (
     demo={<CryptoData />}
     name='Bitcoin Explorer'
     details={{
-      description: 'A simple cryptocurrency tracker',
+      description:
+        'This dashboard was created to explore the available libraries for React Native data visualization. We settled on React Native Chart Kit and utilized some easily-accessible APIs to provide the data.',
       technologies: ['React Native', 'Styled Components', 'TypeScript', 'React Native Chart Kit'],
       links: [
         'https://github.com/generalui/sales-showcase/tree/main/src/components/partials/CryptoData',
