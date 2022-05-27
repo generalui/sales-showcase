@@ -13,8 +13,9 @@ export const Card = ({ contributorName, children, createdAt }: Props) => (
   <StyledCard>
     {children}
     <Footer>
-      <CustomText>Created by {getContributor(contributorName).name}</CustomText>
-      <CustomText>{formatCreatedDate(createdAt)}</CustomText>
+      <CustomText>
+        Created {formatCreatedDate(createdAt)} by {getContributor(contributorName).name}
+      </CustomText>
     </Footer>
     <AvatarContainer>
       <Avatar contributorName={contributorName} />
