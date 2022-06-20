@@ -6,7 +6,7 @@ import { CustomView } from 'common/CustomView'
 
 export const DetailsContainer = styled(CustomView)`
   background-color: ${({ theme }) => theme.colors.standoutBackground};
-  border-radius: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.spacing.sm}px;
   padding: 20px;
   margin-bottom: 30px;
 `
